@@ -1,11 +1,13 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/J8I-C1HJ)
 # Finding The Shortest Distance
 
-Name:
+Name: Tracy U. 
 
-Github Account name: 
+Github Account name: tracy-u
 
-Link to Assignment on Github: (copy and paste the link to your assignment repo here)
+Link to Assignment on Github: 
+- https://github.com/CS5008Fall2025/city-finder-tracy-u
+- `assignment` branch
 
 How many hours did it take you to complete this assignment (estimate)? 
 
