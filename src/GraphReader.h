@@ -19,15 +19,23 @@
 #include <string.h>
 
 
+// Edge structure to read into 
+typedef struct edge_t
+{
+    char* src;
+    char* dest;
+    int distance;
+} edge_t;
+
 // Structure to hold the file pointer and current line data
 typedef struct GraphReader {
     FILE* file;
-    int* currentLine;
+    edge_t* currentLine;
 } GraphReader;
 
 
 GraphReader* reader_open(const char* filename);
-int* reader_next(GraphReader* reader);
+edge_t* reader_next(GraphReader* reader);
 void reader_close(GraphReader* reader);
 
 #endif /* GRAPH_READER_H */

@@ -11,8 +11,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include "GraphReader.h"
+#include "debug.h"
 
-#define MAX_INPUT_LIMIT 20
+#define MAX_INPUT_LIMIT 50
 
 
 char* getInput() {
@@ -37,6 +39,7 @@ void printCityList() {
 }
 
 void validateCities(char* city1, char* city2) {
+    printf("validating cities\n");
     // confirm cities are in list before proceeding
     // TODO
 }
@@ -72,15 +75,62 @@ void start() {
 
 
 void findShortestPath(char* city1, char* city2) {
-    // TO DO 
+    // TODO 
 }
 
-// todo : update to parse arguments
-int main() {
-    start();
+/* TODO : update to parse arguments
+* The client will provide a list of cities/vertices and a list of distances between cities as a command line argument. 
+* `Usage: ./map.out <vertices> <distances>`
+*/ 
+int main(int argc, char const *argv[]) {
+    // if args < 3 then raise error
+    // https://www.geeksforgeeks.org/c/error-handling-in-c/
+    if (argc < 3) {
+        fprintf(stderr, "Error: Must enter filename for vertices and distances.\n");
+        exit(EXIT_FAILURE);
+    }
 
-    return 0;
+    if (argc > 3) {
+        set_debug_level(atoi(argv[3]));
+    }
+
+    char const* verticesFile = argv[1];
+    char const* distancesFile = argv[2];
+
+    //GraphReader* verticesReader = reader_open(verticesFile);
+    GraphReader* distancesReader = reader_open(distancesFile);
+    printf("%s\n", distancesFile);
+    //printf("%s\n", distancesReader);
+
+    if (distancesReader != NULL) {
+        edge_t* line;
+        line = reader_next(distancesReader);
+        while (line != NULL) {
+            printf("Source: %s, Destination: %s, Distance: %d\n", line->src, line->dest, line->distance);
+            line = reader_next(distancesReader);
+
+        }
+    }
+    reader_close(distancesReader);
+
+
+    // MOVE ALL THIS TO SET UP function when done
+    // read vertices file
+    // create graph based on # vertices
+    // read distances file
+    // add edges based on distances file
+    // find shortest path
+
+
+
+    //start();
+
+    return EXIT_SUCCESS;
 }
+
+
+
+
 
 /* EXPECTED OUTPUT
 
