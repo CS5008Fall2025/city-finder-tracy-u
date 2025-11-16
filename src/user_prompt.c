@@ -14,6 +14,8 @@
 #include "GraphReader.h"
 #include "debug.h"
 #include "adjList.h"
+#include "dijkstra.h"
+
 
 #define MAX_INPUT_LIMIT 50
 
@@ -39,8 +41,14 @@ void printCityList() {
     printf("printing a city list\n");
 }
 
-void validateCities(char* city1, char* city2) {
+// TODO add documentation
+int validateCities(AdjListGraph* graph, char* city1, char* city2) {
     printf("validating cities\n");
+    if (findCityIndex(graph, city1) < 0 || findCityIndex(graph, city1) < 0) {
+        return -1;
+    }
+    return 1;
+
     // confirm cities are in list before proceeding
     // TODO
 }
@@ -126,7 +134,13 @@ int main(int argc, char const *argv[]) {
     loadFromFile(graph, distancesFile);
     printGraph(graph);
 
-    
+    int dist[graph->numVertices];
+    int prev[graph->numVertices];
+    dijkstra(graph, 0, dist, prev);
+
+    // Print the shortest path from source to all vertices
+    printSolution(dist, prev, graph->numVertices);
+
 
     // MOVE ALL THIS TO SET UP function when done
     // read vertices file

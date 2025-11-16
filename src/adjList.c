@@ -149,19 +149,6 @@ void addEdge(AdjListGraph* graph, char* src, char* dest, int distance) {
     //     return;
     // }
 
-    // update this logic
-    // if the city is not already in graph increment
-    // graph->numVertices = (src >= graph->numVertices) ? src + 1 : graph->numVertices;
-    // graph->numVertices = (dest >= graph->numVertices) ? dest + 1 : graph->numVertices;
-
-
-    // void add_edge(AdjList *graph, int src, int dest, int weight) {
-    //     edge_t *new_node = creat_node(dest, weight); // works backwards
-    //     new_node->next = graph->adj_lists[src];
-    //     graph->adj_lists[src] = new_node;
-    // }
-    //
-
     // check if they exists; if not, add
     int srcIndex = addCityVertex(graph, src);
     int destIndex = addCityVertex(graph, dest);
