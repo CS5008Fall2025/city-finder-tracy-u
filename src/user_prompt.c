@@ -44,7 +44,11 @@ void validateCities(char* city1, char* city2) {
     // TODO
 }
 
-void start() {
+void setUp(char const* verticesFile, char const* distancesFile) {
+    // TODO
+}
+
+void promptUser() {
     // TODO
     printf("Welcome ...\n"); // UPDATE
     printHelp();
@@ -85,17 +89,21 @@ void findShortestPath(char* city1, char* city2) {
 int main(int argc, char const *argv[]) {
     // if args < 3 then raise error
     // https://www.geeksforgeeks.org/c/error-handling-in-c/
-    if (argc < 3) {
-        fprintf(stderr, "Error: Must enter filename for vertices and distances.\n");
-        exit(EXIT_FAILURE);
-    }
-
+    
     if (argc > 3) {
         set_debug_level(atoi(argv[3]));
     }
+    
+    if (argc < 3) {
+        fprintf(stderr, "Error: Must enter filename for vertices and distances.\n");
+        exit(EXIT_FAILURE);
+    } else {}
+
 
     char const* verticesFile = argv[1];
     char const* distancesFile = argv[2];
+
+    setUp(verticesFile, distancesFile);
 
     //GraphReader* verticesReader = reader_open(verticesFile);
     GraphReader* distancesReader = reader_open(distancesFile);

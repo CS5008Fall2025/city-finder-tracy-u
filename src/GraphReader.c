@@ -1,18 +1,14 @@
 /**
+ * Name: Tracy U
+ * CS 5008, Fall 2025
+ * Homework: City Finder
  * 
+ * References: Initial code Graphs Codealong videos and Lab code
  * 
- * References: From graphs codealong 
- * 
- * TODO: modify for string, string, int (currently int, int, int)
- */
-
-
-
-/**
 * Graph Reader - helps read in files of the format
-* <source> <destination> <weight>
-* Each time a line is read, it returns an array of 3 integers
-* representing the source, destination, and weight.
+* <source> <destination> <distance>
+* Each time a line is read, it returns an edge
+* representing the source, destination, and distance.
 
 * The GraphReader structure contains a file pointer and a buffer for the current line.
 * It handles its own memory management, freeing the previous line when a new one is read.
@@ -20,9 +16,9 @@
 * Example usage:
 * GraphReader* reader = reader_open("graph.txt");
 * if (reader != NULL) {
-*     int* line;
+*     edge_t* line;
 *     while ((line = reader_next(reader)) != NULL) {
-*         printf("Source: %d, Destination: %d, Weight: %d\n", line[0], line[1], line[2]);
+*         printf("Source: %s, Destination: %s, Weight: %d\n", line->src, line->dest, line->distance);
 *     }
 *     reader_close(reader);
 * }
@@ -40,9 +36,9 @@
 * GraphReader - structure to hold the file pointer and current line data
 * Opens a file for reading in graphe data. The file 
 * should contain lines of the format:
-* <source> <destination> <weight>
-* Each time a line is read, it returns an array of 3 integers
-* representing the source, destination, and weight.
+* <source> <destination> <distance>
+* Each time a line is read, it returns an edge_t 
+* representing the source, destination, and distance.
 * @param filename - the name of the file to read
 * @return - a pointer to a GraphReader structure, or NULL if the file cannot be opened
 **/
@@ -67,7 +63,7 @@ GraphReader* reader_open(const char* filename) {
 /**
 * reader_next - reads the next line from the graph file
 * @param reader - a pointer to the GraphReader structure
-* @return - an array of 3 values representing the source, destination, and distance,
+* @return - an edge_t with 3 values representing the source, destination, and distance,
 *           or NULL if end of file or error
 **/
 edge_t* reader_next(GraphReader* reader) {
@@ -95,18 +91,7 @@ edge_t* reader_next(GraphReader* reader) {
     char dest[BUFFER_SIZE];
     int distance;
     
-   // Read data of file in specific formats
-    // while (fscanf(reader->file, "%s %s %d", 
-    //            src,
-    //            dest,
-    //            distance) == 3) {
-    //     printf("src: %s\t dest: %s\t distance: %d\n", src, dest, *distance);
-    // }
-
-
-
-    // TODO -- this needs to be updated?
-    // https://www.geeksforgeeks.org/c/scanf-and-fscanf-in-c/
+    // Reference: https://www.geeksforgeeks.org/c/scanf-and-fscanf-in-c/
     if (fscanf(reader->file, "%255s %255s %d", 
                src,
                dest,
@@ -135,33 +120,6 @@ edge_t* reader_next(GraphReader* reader) {
     strcpy(reader->currentLine->dest, dest);
     reader->currentLine->distance = distance;
     
-
-    // if (!(reader->currentLine == NULL)) {
-    //     printf("[0]: %s\t [1]: %s\t [2]: %s\n", 
-    //         reader->currentLine[0], 
-    //         reader->currentLine[1], 
-    //         reader->currentLine[2]);
-    // }
-
-    // if (fscanf(reader->file, "%s %s %d", 
-    //            src,
-    //            dest,
-    //            distance) != 3) {
-    //     // If we couldn't read 3 values, clean up and return NULL
-    //     free(reader->currentLine);
-    //     reader->currentLine = NULL;
-    //     return NULL;
-    // }
-
-    // while (fscanf(reader->file, "%255s %255s %d", 
-    //            src,
-    //            dest,
-    //            &distance) == 3) {
-    //     // If we couldn't read 3 values, clean up and return NULL
-    //     printf("Source: %s, Destination: %s, Distance: %d\n", src, dest, distance);
-    // }
-
-
     return reader->currentLine;
 }
 
