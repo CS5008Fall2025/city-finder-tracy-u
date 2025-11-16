@@ -36,6 +36,7 @@ typedef struct GraphReader {
 
 GraphReader* reader_open(const char* filename);
 edge_t* reader_next(GraphReader* reader);
+edge_t* reader_next_vertices(GraphReader* reader);
 void reader_close(GraphReader* reader);
 
 #endif /* GRAPH_READER_H */

@@ -36,9 +36,9 @@ void printHelp() {
     printf("\t\texit - exit the program\n");
 }
 
-void printCityList() {
-    // TODO
-    printf("printing a city list\n");
+// TODO documentation
+void printCityList(AdjListGraph* graph) {
+    printCityVertices(graph);
 }
 
 // TODO add documentation
@@ -57,7 +57,7 @@ void setUp(char const* verticesFile, char const* distancesFile) {
     // TODO
 }
 
-void promptUser() {
+void promptUser(AdjListGraph* graph) {
     // TODO
     printf("Welcome ...\n"); // UPDATE
     printHelp();
@@ -74,7 +74,7 @@ void promptUser() {
         // }
 
         if (strcasecmp(menuChoice, "list") == 0) {
-            printCityList();
+            printCityList(graph);
         } else if (strcasecmp(menuChoice, "help") == 0) {
             printHelp();
         } else if (strcasecmp(menuChoice, "exit") == 0) {
@@ -87,8 +87,8 @@ void promptUser() {
 }
 
 
-void findShortestPath(char* city1, char* city2) {
-    // TODO 
+void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
+    
 }
 
 /* TODO : update to parse arguments
@@ -131,7 +131,7 @@ int main(int argc, char const *argv[]) {
     reader_close(distancesReader);
 
     AdjListGraph* graph = createGraph(50, false);
-    loadFromFile(graph, distancesFile);
+    loadFromFile(graph, verticesFile, distancesFile);
     printGraph(graph);
 
     int dist[graph->numVertices];
@@ -141,6 +141,7 @@ int main(int argc, char const *argv[]) {
     // Print the shortest path from source to all vertices
     printSolution(dist, prev, graph->numVertices);
 
+    printCityVertices(graph);
 
     // MOVE ALL THIS TO SET UP function when done
     // read vertices file
@@ -151,7 +152,7 @@ int main(int argc, char const *argv[]) {
 
 
 
-    //start();
+    promptUser(graph);
 
     return EXIT_SUCCESS;
 }

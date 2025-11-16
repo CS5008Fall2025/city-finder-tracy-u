@@ -288,22 +288,40 @@ void printGraph(AdjListGraph* graph) {
  * @param graph A pointer to the AdjListGraph.
  * @param filename The name of the file to load from.
  */
-void loadFromFile(AdjListGraph* graph, const char* filename) {
-    GraphReader* reader = reader_open(filename);
-    if (reader == NULL) {
-        fprintf(stderr, "Failed to open file: %s\n", filename);
+void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char* distanceFilename) {
+    
+    
+    GraphReader* distanceReader = reader_open(distanceFilename);
+    if (distanceReader == NULL) {
+        fprintf(stderr, "Failed to open file: %s\n", distanceFilename);
         return;
     }
-
     edge_t* line;
-    while ((line = reader_next(reader)) != NULL) {
+
+    while ((line = reader_next(distanceReader)) != NULL) {
         char* src = line->src;
         char* dest = line->dest;
         int distance = line->distance;
         DEBUG_PRINT(DEBUG_INFO, "Adding edge from %s to %s with distance %d\n", src, dest, distance);
         addEdge(graph, src, dest, distance);
     }
-    reader_close(reader);
+    reader_close(distanceReader);
+
+
+    // read in all vertices
+    GraphReader* verticesReader = reader_open(verticesFilename);
+    if (verticesReader == NULL) {
+        fprintf(stderr, "Failed to open file: %s\n", verticesFilename);
+        return;
+    }
+
+    while ((line = reader_next_vertices(verticesReader)) != NULL) {
+        DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
+        addCityVertex(graph, line->src);
+        // DEBUG_PRINT(DEBUG_INFO, "Adding edge from %s to %s with distance %d\n", src, dest, distance);
+        // addEdge(graph, src, dest, distance);
+    }
+    reader_close(verticesReader);
 }
 
 
@@ -332,4 +350,11 @@ AdjListNode* findNode(AdjListGraph* graph, char* city) {
     }
     DEBUG_PRINT(DEBUG_INFO, "City found %s\n", city);
     return graph->adjList[index];
+}
+
+// TODO add documentation
+void printCityVertices(AdjListGraph* graph) {
+   for (int i = 0; i < graph->numVertices; i++) {
+        printf("%s\n", graph->adjList[i]->city);
+    }
 }

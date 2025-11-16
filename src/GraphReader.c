@@ -123,6 +123,62 @@ edge_t* reader_next(GraphReader* reader) {
     return reader->currentLine;
 }
 
+
+/**
+* reader_next - reads the next line from the graph file
+* @param reader - a pointer to the GraphReader structure
+* @return - a vertex 
+**/
+edge_t* reader_next_vertices(GraphReader* reader) {
+
+    if (reader == NULL || reader->file == NULL) {
+        return NULL;
+    }
+    
+    // Free previous line if exists
+    if (reader->currentLine != NULL) {
+        free(reader->currentLine->src);
+        free(reader->currentLine->dest);
+        free(reader->currentLine);
+        reader->currentLine = NULL;
+    }
+    
+    // Allocate memory for the new line (now edge)
+    reader->currentLine = (edge_t*)malloc(sizeof(edge_t));
+    if (reader->currentLine == NULL) {
+        return NULL;
+    }
+
+    // Allocate memory for vertex to be read in
+    char vertex[BUFFER_SIZE];
+
+    
+    // Reference: https://www.geeksforgeeks.org/c/scanf-and-fscanf-in-c/
+    if (fscanf(reader->file, "%s", 
+               vertex
+               ) != 1) {
+        // If we couldn't read vertex, clean up and return NULL
+        free(reader->currentLine);
+        reader->currentLine = NULL;
+        return NULL;
+    }
+
+    reader->currentLine->src = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char));
+    //reader->currentLine->dest = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char));
+
+    if (reader->currentLine->src == NULL) {
+        free(reader->currentLine);
+        reader->currentLine = NULL;
+        return NULL;
+    }
+
+    // set the values in the edge to those we read in
+    strcpy(reader->currentLine->src, vertex);
+    reader->currentLine->dest = NULL;
+    reader->currentLine->distance = 0;    
+    return reader->currentLine;
+}
+
 /**
 * reader_close - closes the GraphReader and frees allocated memory
 * This function should be called when done with the GraphReader

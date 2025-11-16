@@ -39,11 +39,11 @@ int getDegree(AdjListGraph* graph, char* city);
 //char* getNeighbors(AdjListGraph* graph, char* city);
 int getDistance(AdjListGraph* graph, char* src, char* dest);
 void printGraph(AdjListGraph* graph);
-void loadFromFile(AdjListGraph* graph, const char* filename);
+void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char* distanceFilename);
 int findCityIndex(AdjListGraph* graph, char* city);
 AdjListNode* findNode(AdjListGraph* graph, char* city);
 int addCityVertex(AdjListGraph* graph, char* city);
-
+void printCityVertices(AdjListGraph* graph);
 
 
 
