@@ -92,7 +92,7 @@ edge_t* reader_next(GraphReader* reader) {
     int distance;
     
     // Reference: https://www.geeksforgeeks.org/c/scanf-and-fscanf-in-c/
-    if (fscanf(reader->file, "%255s %255s %d", 
+    if (fscanf(reader->file, "%s %s %d", 
                src,
                dest,
                &distance) != 3) {

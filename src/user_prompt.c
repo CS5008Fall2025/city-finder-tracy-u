@@ -13,6 +13,7 @@
 #include <strings.h>
 #include "GraphReader.h"
 #include "debug.h"
+#include "adjList.h"
 
 #define MAX_INPUT_LIMIT 50
 
@@ -103,10 +104,10 @@ int main(int argc, char const *argv[]) {
     char const* verticesFile = argv[1];
     char const* distancesFile = argv[2];
 
-    setUp(verticesFile, distancesFile);
 
-    //GraphReader* verticesReader = reader_open(verticesFile);
+    GraphReader* verticesReader = reader_open(verticesFile);
     GraphReader* distancesReader = reader_open(distancesFile);
+
     printf("%s\n", distancesFile);
     //printf("%s\n", distancesReader);
 
@@ -121,6 +122,11 @@ int main(int argc, char const *argv[]) {
     }
     reader_close(distancesReader);
 
+    AdjListGraph* graph = createGraph(50, false);
+    loadFromFile(graph, distancesFile);
+    printGraph(graph);
+
+    
 
     // MOVE ALL THIS TO SET UP function when done
     // read vertices file

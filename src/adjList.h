@@ -16,7 +16,7 @@
 
 
 typedef struct node_t {
-    char* vertex; //city
+    char* city; //city
     int distance;
     struct node_t* next;
 } AdjListNode;
@@ -34,12 +34,15 @@ typedef struct {
 AdjListGraph* createGraph(int capacity, bool directed); 
 void freeGraph(AdjListGraph* graph);
 
-void addEdge(AdjListGraph* graph, char* src, char dest, int distance);
-int getDegree(AdjListGraph* graph, char* vertex);
-int* getNeighbors(AdjListGraph* graph, char* vertex);
+void addEdge(AdjListGraph* graph, char* src, char* dest, int distance);
+int getDegree(AdjListGraph* graph, char* city);
+//char* getNeighbors(AdjListGraph* graph, char* city);
 int getDistance(AdjListGraph* graph, char* src, char* dest);
 void printGraph(AdjListGraph* graph);
 void loadFromFile(AdjListGraph* graph, const char* filename);
+int findCityIndex(AdjListGraph* graph, char* city);
+AdjListNode* findNode(AdjListGraph* graph, char* city);
+int addCityVertex(AdjListGraph* graph, char* city);
 
 
 
