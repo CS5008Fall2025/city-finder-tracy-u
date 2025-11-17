@@ -55,25 +55,41 @@ int validateCities(AdjListGraph* graph, char* city1, char* city2) {
 
 void setUp(char const* verticesFile, char const* distancesFile) {
     // TODO
+    return;
+}
+
+// TODO
+void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
+    int dist[graph->numVertices];
+    int prev[graph->numVertices];
+    int srcIndex = findCityIndex(graph, city1);
+    int destIndex = findCityIndex(graph, city2);
+    dijkstra(graph, srcIndex, dist, prev);
+    printPathFound(graph, destIndex, dist, prev, graph->numVertices);
+
 }
 
 void promptUser(AdjListGraph* graph) {
     // TODO
     printf("Welcome ...\n"); // UPDATE
     printHelp();
-    char* menuChoice;
+    char* menuChoice = NULL;
 
-    while(strcmp(menuChoice, "exit") != 0) {
+    while(menuChoice == NULL || strcmp(menuChoice, "exit") != 0) {
         printf("Where do you want to go today? ");
         menuChoice = getInput();
 
-        // if (menuChoice has two parts) { 
-        //     if (validateCities(city1, city2)) {
-        //         findShortestPath();
-        //     }
-        // }
+        char* city1 = strtok(menuChoice, " ");
+        char* city2 = strtok(NULL, " ");
 
-        if (strcasecmp(menuChoice, "list") == 0) {
+        if (city1 != NULL && city2 != NULL) {
+            if (findCityIndex(graph, city1) != -1 && findCityIndex(graph, city2) != -1) {
+                findShortestPath(graph, city1, city2);
+            } else {
+                printf("Invalid Command\n");
+                printHelp();
+            }
+        } else if (strcasecmp(menuChoice, "list") == 0) {
             printCityList(graph);
         } else if (strcasecmp(menuChoice, "help") == 0) {
             printHelp();
@@ -83,13 +99,12 @@ void promptUser(AdjListGraph* graph) {
             printf("Invalid Command\n");
             printHelp();
         }
-    } 
+    }
+    free(menuChoice);
+ 
 }
 
 
-void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
-    
-}
 
 /* TODO : update to parse arguments
 * The client will provide a list of cities/vertices and a list of distances between cities as a command line argument. 
@@ -112,36 +127,61 @@ int main(int argc, char const *argv[]) {
     char const* verticesFile = argv[1];
     char const* distancesFile = argv[2];
 
+    // GraphReader* verticesReader = reader_open(verticesFile);
+    // GraphReader* distancesReader = reader_open(distancesFile);
 
-    GraphReader* verticesReader = reader_open(verticesFile);
-    GraphReader* distancesReader = reader_open(distancesFile);
+    // printf("%s\n", distancesFile);
+    // //printf("%s\n", distancesReader);
 
-    printf("%s\n", distancesFile);
-    //printf("%s\n", distancesReader);
+    // if (distancesReader != NULL) {
+    //     edge_t* line;
+    //     line = reader_next(distancesReader);
+    //     while (line != NULL) {
+    //         printf("Source: %s, Destination: %s, Distance: %d\n", line->src, line->dest, line->distance);
+    //         line = reader_next(distancesReader);
 
-    if (distancesReader != NULL) {
-        edge_t* line;
-        line = reader_next(distancesReader);
-        while (line != NULL) {
-            printf("Source: %s, Destination: %s, Distance: %d\n", line->src, line->dest, line->distance);
-            line = reader_next(distancesReader);
-
-        }
-    }
-    reader_close(distancesReader);
+    //     }
+    // }
+    // reader_close(distancesReader);
 
     AdjListGraph* graph = createGraph(50, false);
     loadFromFile(graph, verticesFile, distancesFile);
-    printGraph(graph);
+    // printGraph(graph);
 
-    int dist[graph->numVertices];
-    int prev[graph->numVertices];
-    dijkstra(graph, 0, dist, prev);
+    // int dist[graph->numVertices];
+    // int prev[graph->numVertices];
+    // dijkstra(graph, 0, dist, prev);
 
-    // Print the shortest path from source to all vertices
-    printSolution(dist, prev, graph->numVertices);
+    // printf("printing distance...\n");
+    // for (int i = 0; i < graph->numVertices; i++) {
+    //     printf("i: %d\t", dist[i]);
+    // }
 
-    printCityVertices(graph);
+    // printf("printing prev...\n");
+    // for (int i = 0; i < graph->numVertices; i++) {
+    //     printf("i: %d\t", prev[i]);
+    // }
+
+    // // Print the shortest path from source to all vertices
+    // printSolution(graph, dist, prev, graph->numVertices);
+
+    // printCityVertices(graph);
+
+    // dijkstra(graph, 6, dist, prev);
+
+    // printf("printing distance...\n");
+    // for (int i = 0; i < graph->numVertices; i++) {
+    //     printf("i: %d, dist[i]: %d\t", i, dist[i]);
+    // }
+
+    // printf("printing prev...\n");
+    // for (int i = 0; i < graph->numVertices; i++) {
+    //     printf("i: %d\t", prev[i]);
+    // }
+
+    // printSolution(graph, dist, prev, graph->numVertices);
+    // printGraph(graph);
+
 
     // MOVE ALL THIS TO SET UP function when done
     // read vertices file
@@ -153,6 +193,7 @@ int main(int argc, char const *argv[]) {
 
 
     promptUser(graph);
+    freeGraph(graph);
 
     return EXIT_SUCCESS;
 }

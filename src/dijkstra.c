@@ -7,6 +7,8 @@
 #include <stdlib.h>
 
 #include "dijkstra.h"
+#include "debug.h"
+
 
 /// Supporting Heap Data Structures
 
@@ -72,6 +74,7 @@ void __heapSwap(NeuHeapNode **a, NeuHeapNode **b) {
   NeuHeapNode *temp = *a;
   *a = *b;
   *b = temp;
+
 }
 
 /**
@@ -121,8 +124,8 @@ void __heapify(NeuHeap *minHeap, int i) {
  */
 void __heapDecreaseKey(NeuHeap *minHeap, NeuHeapNode *node, int newDist) {
   node->dist = newDist;
-  int i = node->data;
-  while (i != 0 &&
+  int i = node->data; 
+  while (i > 0 &&
          minHeap->array[__heapParent(i)]->dist > minHeap->array[i]->dist) {
     __heapSwap(&minHeap->array[i], &minHeap->array[__heapParent(i)]);
     i = __heapParent(i);
@@ -176,6 +179,9 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
   NeuHeapNode *nodes[graph->numVertices];
   for (int i = 0; i < graph->numVertices; i++) {
     nodes[i] = __heapInsert(minHeap, i, dist[i]);
+    
+    DEBUG_PRINT(DEBUG_INFO, "i: %d, data: %d, dist: %d\n", 
+      i, nodes[i]->data, nodes[i]->dist);
   }
 
   // Main loop for Dijkstra's algorithm
@@ -186,15 +192,15 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
 
     // If the extracted vertex is at infinity, all remaining vertices are
     // unreachable
-    if (dist[u] == INT_MAX) {
-      break;
-    }
+    // if (dist[u] == INT_MAX) {
+    //   break;
+    // }
 
     // For each adjacent vertex v, update dist[v] if there's a shorter path
     // through u
     AdjListNode *curr = graph->adjList[u];
+
     while (curr != NULL) {
-      //int v = curr->vertex;
       int v = findCityIndex(graph, curr->city);
       int distance = curr->distance;
 
@@ -214,27 +220,47 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
 /**
  * Prints the shortest path from source to a given vertex.
  * @param src The source vertex.
- * @param dest The destination vertex.
+ * @param dest The destination vertex index
  * @param prev Array containing the previous node information.
  * @param V The maximum number of vertices in the graph.
  */
-void printPath(int dest, int *prev, int V) {
+void printPath(AdjListGraph *graph, int dest, int *prev, int V) {
   // Create a temporary array to store the path
-  int path[V]; // Assumes at most 100 vertices in path
+  char* path[V]; // Assumes at most 100 vertices in path
   int pathLength = 0;
 
   // First, collect the path in reverse order
   for (int v = dest; v != -1; v = prev[v]) {
-    path[pathLength++] = v;
+    path[pathLength++] = graph->adjList[v]->city;
   }
 
   // Then print the path in correct order (source to destination)
   for (int i = pathLength - 1; i >= 0; i--) {
-    printf("%d", path[i]);
-    if (i != 0) {
-      printf(" -> ");
+    printf("\t\t%s\n", path[i]);
+    // if (i != 0) {
+    //   printf("\n");
+    //   // printf(" -> ");
+    // }
+  } 
+}
+
+
+
+/**
+ * Prints the distance array showing shortest distances from source to all
+ * vertices.
+ * @param dist Array containing shortest distances.
+ * @param prev Array containing previous nodes in the optimal path.
+ * @param V The number of vertices.
+ */
+void printPathFound(AdjListGraph* graph, int destIndex, int *dist, int *prev, int V) {
+    if (dist[destIndex] != INT_MAX) {
+      printf("Path Found...\n");
+      printPath(graph, destIndex, prev, V);
+      printf("Total Distance: %d\n", dist[destIndex]);
+    } else {
+      printf("Path Not Found...\n");
     }
-  }
 }
 
 /**
@@ -244,15 +270,15 @@ void printPath(int dest, int *prev, int V) {
  * @param prev Array containing previous nodes in the optimal path.
  * @param V The number of vertices.
  */
-void printSolution(int *dist, int *prev, int V) {
+void printSolution(AdjListGraph* graph, int *dist, int *prev, int V) {
   printf("Shortest Path from Source to Destination:\n");
   for (int i = 0; i < V; i++) {
+    printf("dist[i]: %d for i: %d\n", dist[i], i);
     if (dist[i] != INT_MAX) {
-      printf("Shortest path to vertex %d is %d with path: ", i, dist[i]);
-      printPath(i, prev, V);
-      printf("\n");
+      printf("Shortest path to vertex %s is %d with path:\n", graph->adjList[i]->city, dist[i]);
+      printPath(graph, i, prev, V);
     } else {
-      printf("Vertex %d is unreachable from source\n", i);
+      printf("Vertex %s is unreachable from source\n", graph->adjList[i]->city);
     }
   }
   printf("\n");

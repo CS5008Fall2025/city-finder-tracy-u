@@ -29,7 +29,11 @@ void dijkstra(AdjListGraph* graph, int src, int* dist, int* prev);
  * @param prev Array containing the previous node information
 * @param V The maximum number of vertices in the graph.
  */
-void printPath(int dest, int* prev, int V);
+void printPath(AdjListGraph* graph, int dest, int* prev, int V);
+
+// TODO
+void printPathFound(AdjListGraph* graph, int destIndex, int *dist, int *prev, int V);
+
 
 /**
  * @brief Prints the distance array showing shortest distances from source to all vertices
@@ -38,6 +42,6 @@ void printPath(int dest, int* prev, int V);
  * @param prev Array containing previous nodes in the optimal path.
  * @param V The number of vertices
  */
-void printSolution(int* dist, int* prev, int V);
+void printSolution(AdjListGraph* graph, int* dist, int* prev, int V);
 
 #endif /* DIJKSTRA_H */
