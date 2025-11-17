@@ -7,9 +7,9 @@ CFILES =  user_prompt.c GraphReader.c debug.c adjList.c dijkstra.c
 # USER_PROMPT_TARGET = matrixTest.out
 # USER_PROMPT_SRCS = user_prompt.c 
 
-all: map  #runs target myprogram is nothing is passed into make
+all: myprogram  #runs target myprogram is nothing is passed into make
 
-map: # it needs to compile out to >>>map.out<<<!
+myprogram: # it needs to compile out to >>>map.out<<<!
 	$(CC) $(CFLAGS) -o map.out $(CFILES)  
 	
 
