@@ -289,15 +289,26 @@ void printGraph(AdjListGraph* graph) {
  * @param filename The name of the file to load from.
  */
 void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char* distanceFilename) {
-    
-    
+    // read in all vertices
+    GraphReader* verticesReader = reader_open(verticesFilename);
+    if (verticesReader == NULL) {
+        fprintf(stderr, "Failed to open file: %s\n", verticesFilename);
+        return;
+    }
+    edge_t* line;
+
+    while ((line = reader_next_vertices(verticesReader)) != NULL) {
+        DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
+        addCityVertex(graph, line->src);
+    }
+    reader_close(verticesReader);
+
+    // read in all distances
     GraphReader* distanceReader = reader_open(distanceFilename);
     if (distanceReader == NULL) {
         fprintf(stderr, "Failed to open file: %s\n", distanceFilename);
         return;
     }
-    edge_t* line;
-
     while ((line = reader_next(distanceReader)) != NULL) {
         char* src = line->src;
         char* dest = line->dest;
@@ -306,20 +317,6 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
         addEdge(graph, src, dest, distance);
     }
     reader_close(distanceReader);
-
-
-    // read in all vertices
-    GraphReader* verticesReader = reader_open(verticesFilename);
-    if (verticesReader == NULL) {
-        fprintf(stderr, "Failed to open file: %s\n", verticesFilename);
-        return;
-    }
-
-    while ((line = reader_next_vertices(verticesReader)) != NULL) {
-        DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
-        addCityVertex(graph, line->src);
-    }
-    reader_close(verticesReader);
 }
 
 
