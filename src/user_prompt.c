@@ -19,15 +19,19 @@
 
 #define MAX_INPUT_LIMIT 50
 
-
+/**
+ * @brief Gets input from the user
+ * @return a string
+ */
 char* getInput() {
     char* str = malloc(MAX_INPUT_LIMIT * sizeof(char));
     scanf("%[^\n]%*c", str);
-    
-    // TODO: string handling?
     return str;
 }
 
+/**
+ * @brief Prints the help menu of commands
+ */
 void printHelp() {
     printf("Commands:\n");
     printf("\t\tlist - list all cities\n");
@@ -36,48 +40,51 @@ void printHelp() {
     printf("\t\texit - exit the program\n");
 }
 
-// TODO documentation
+
+/**
+ * @brief Prints the list of cities
+ * @param graph pointer to the AdjListGraph
+ */
 void printCityList(AdjListGraph* graph) {
     printCityVertices(graph);
 }
 
-// TODO add documentation
+/**
+ * @brief Validates that both cities are in the vertices
+ * @param graph pointer to the AdjListGraph
+ * @param city1 name of a city
+ * @param city2 name of a city
+ * @return 1 if true, else 0
+ */
 int validateCities(AdjListGraph* graph, char* city1, char* city2) {
-    printf("validating cities\n");
-    if (findCityIndex(graph, city1) < 0 || findCityIndex(graph, city1) < 0) {
-        return -1;
-    }
-    return 1;
-
-    // confirm cities are in list before proceeding
-    // TODO
-}
-
-void setUp(char const* verticesFile, char const* distancesFile) {
-    // TODO
-    return;
-}
-
-// TODO
-void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
     if (findCityIndex(graph, city1) != -1 && findCityIndex(graph, city2) != -1) {
-        int dist[graph->numVertices];
-        int prev[graph->numVertices];
-        int srcIndex = findCityIndex(graph, city1);
-        int destIndex = findCityIndex(graph, city2);
-        dijkstra(graph, srcIndex, dist, prev);
-        printPathFound(graph, destIndex, dist, prev, graph->numVertices);
-    } else {
-        printf("Invalid Command\n");
-        printHelp();
-    }
-    
-
+        return 1;
+    } 
+    return 0;
 }
 
+/**
+ * @brief Gets and prints the shortest path from city1 to city2
+ * @param graph pointer to the AdjListGraph
+ * @param city1 name of a city
+ * @param city2 name of a city
+ * @return a string
+ */
+void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
+    int dist[graph->numVertices];
+    int prev[graph->numVertices];
+    int srcIndex = findCityIndex(graph, city1);
+    int destIndex = findCityIndex(graph, city2);
+    dijkstra(graph, srcIndex, dist, prev); // run algo for all from src
+    printPathFound(graph, destIndex, dist, prev, graph->numVertices);
+}
+
+/**
+ * @brief Prompts the user and controls flow
+ * @param graph pointer to the AdjListGraph
+ */
 void promptUser(AdjListGraph* graph) {
-    // TODO
-    printf("Welcome ...\n"); // UPDATE
+    printf("*** Welcome to the Shortest Path City Finder! ***\n"); 
     printHelp();
     char* menuChoice = NULL;
 
@@ -88,7 +95,7 @@ void promptUser(AdjListGraph* graph) {
         char* city1 = strtok(menuChoice, " ");
         char* city2 = strtok(NULL, " ");
 
-        if (city1 != NULL && city2 != NULL) {
+        if (city1 != NULL && city2 != NULL && validateCities(graph, city1, city2) == 1) {
             findShortestPath(graph, city1, city2);
         } else if (strcasecmp(menuChoice, "list") == 0) {
             printCityList(graph);
@@ -102,19 +109,11 @@ void promptUser(AdjListGraph* graph) {
         }
     }
     free(menuChoice);
- 
 }
 
 
-
-/* TODO : update to parse arguments
-* The client will provide a list of cities/vertices and a list of distances between cities as a command line argument. 
-* `Usage: ./map.out <vertices> <distances>`
-*/ 
 int main(int argc, char const *argv[]) {
-    // if args < 3 then raise error
-    // https://www.geeksforgeeks.org/c/error-handling-in-c/
-    
+    // https://www.geeksforgeeks.org/c/error-handling-in-c/    
     if (argc > 3) {
         set_debug_level(atoi(argv[3]));
     }
@@ -124,86 +123,14 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     } else {}
 
-
     char const* verticesFile = argv[1];
     char const* distancesFile = argv[2];
 
     AdjListGraph* graph = createGraph(50, false);
     loadFromFile(graph, verticesFile, distancesFile);
-    
-    // MOVE ALL THIS TO SET UP function when done
-    // read vertices file
-    // create graph based on # vertices
-    // read distances file
-    // add edges based on distances file
-    // find shortest path
 
     promptUser(graph);
     freeGraph(graph);
 
     return EXIT_SUCCESS;
 }
-
-
-
-
-
-/* EXPECTED OUTPUT
-
-
-*****Welcome to the shortest path finder!******
-Commands:
-        list - list all cities
-        <city1> <city2> - find the shortest path between two cities
-        help - print this help message
-        exit - exit the program
-*******************************************************
-Where do you want to go today? what do i do?
-Invalid Command
-Commands:
-        list - list all cities
-        <city1> <city2> - find the shortest path between two cities
-        help - print this help message
-        exit - exit the program
-Where do you want to go today? list
-a
-b
-c
-d
-e
-f
-g
-x
-Where do you want to go today? a f
-Path Found...
-        a
-        c
-        e
-        f
-Total Distance: 10
-Where do you want to go today? f a
-Path Found...
-        f
-        e
-        c
-        a
-Total Distance: 10
-Where do you want to go today? a x
-Path Not Found...
-Where do you want to go today? boston maine
-Invalid Command
-Commands:
-        list - list all cities
-        <city1> <city2> - find the shortest path between two cities
-        help - print this help message
-        exit - exit the program
-Where do you want to go today? help
-Commands:
-        list - list all cities
-        <city1> <city2> - find the shortest path between two cities
-        help - print this help message
-        exit - exit the program
-Where do you want to go today? exit
-Goodbye!
-
-*/
