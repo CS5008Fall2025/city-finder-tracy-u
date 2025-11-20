@@ -33,7 +33,14 @@ void dijkstra(AdjListGraph* graph, int src, int* dist, int* prev);
  */
 void printPath(AdjListGraph* graph, int dest, int* prev, int V);
 
-// TODO
+
+/**
+ * @brief Prints the distance array showing shortest distances from source to all vertices
+ * @param destIndex index of the destination city
+ * @param dist Array containing shortest distances
+ * @param prev Array containing previous nodes in the optimal path.
+ * @param V The number of vertices
+ */
 void printPathFound(AdjListGraph* graph, int destIndex, int *dist, int *prev, int V);
 
 

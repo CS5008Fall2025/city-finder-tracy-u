@@ -16,7 +16,7 @@
 
 
 typedef struct node_t {
-    char* city; //city
+    char* city;
     int distance;
     struct node_t* next;
 } AdjListNode;
@@ -40,7 +40,5 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
 int findCityIndex(AdjListGraph* graph, char* city);
 int addCityVertex(AdjListGraph* graph, char* city);
 void printCityVertices(AdjListGraph* graph);
-
-
 
 #endif /* ADJ_LIST_H */

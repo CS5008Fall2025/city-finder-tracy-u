@@ -151,9 +151,7 @@ void addEdge(AdjListGraph* graph, char* src, char* dest, int distance) {
     newNode->next = graph->adjList[srcIndex]->next;
     graph->adjList[srcIndex]->next = newNode;
     
-    // TODO
     if (!graph->directed) {
-        // DEBUG_PRINT(DEBUG_INFO, "Adding reverse");
         AdjListNode* reverseNode = createNewNode(src, distance);
         reverseNode->next = graph->adjList[destIndex]->next;
         graph->adjList[destIndex]->next = reverseNode;
@@ -222,8 +220,11 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
 }
 
 
-// TODO add documentation
-int findCityIndex(AdjListGraph* graph, char* city) {
+/**
+ * Finds the index for a city name.
+ * @param graph A pointer to the AdjListGraph.
+ * @param city The name of the city
+ */int findCityIndex(AdjListGraph* graph, char* city) {
     for (int i = 0; i < graph->numVertices; i++) {
         if (graph->adjList[i] != NULL && 
             strcasecmp(graph->adjList[i]->city, city) == 0) {
@@ -233,7 +234,10 @@ int findCityIndex(AdjListGraph* graph, char* city) {
     return -1;
 }
 
-// TODO add documentation
+/**
+ * Prints the city names from the graph
+ * @param graph A pointer to the AdjListGraph.
+ */
 void printCityVertices(AdjListGraph* graph) {
    for (int i = 0; i < graph->numVertices; i++) {
         printf("%s\n", graph->adjList[i]->city);

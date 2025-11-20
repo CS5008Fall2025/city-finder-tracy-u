@@ -18,7 +18,7 @@
 * if (reader != NULL) {
 *     edge_t* line;
 *     while ((line = reader_next(reader)) != NULL) {
-*         printf("Source: %s, Destination: %s, Weight: %d\n", line->src, line->dest, line->distance);
+*         printf("Source: %s, Destination: %s, Distance: %d\n", line->src, line->dest, line->distance);
 *     }
 *     reader_close(reader);
 * }
@@ -125,7 +125,7 @@ edge_t* reader_next(GraphReader* reader) {
 
 
 /**
-* reader_next - reads the next line from the graph file
+* reader_next - reads the next line from the graph file for vertices
 * @param reader - a pointer to the GraphReader structure
 * @return - a vertex 
 **/
@@ -171,7 +171,7 @@ edge_t* reader_next_vertices(GraphReader* reader) {
         return NULL;
     }
 
-    // set the values in the edge to those we read in
+    // set the values in the edge to those we read in or other values
     strcpy(reader->currentLine->src, vertex);
     reader->currentLine->dest = NULL;
     reader->currentLine->distance = 0;    

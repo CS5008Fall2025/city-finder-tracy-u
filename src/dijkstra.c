@@ -185,7 +185,7 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
     nodes[i] = __heapInsert(minHeap, i, dist[i]); // for each node, insert into heap
   }
 
-  // turn that into heap 
+  // turn that into heap !!! 
   // https://www.geeksforgeeks.org/dsa/introduction-to-min-heap-data-structure/
   for (int i = graph->numVertices / 2 - 1; i >= 0; i--) {
     __heapify(minHeap, i);
@@ -269,7 +269,6 @@ void printPathFound(AdjListGraph* graph, int destIndex, int *dist, int *prev, in
 void printSolution(AdjListGraph* graph, int *dist, int *prev, int V) {
   printf("Shortest Path from Source to Destination:\n");
   for (int i = 0; i < V; i++) {
-    // printf("dist[i]: %d for i: %d\n", dist[i], i);
     if (dist[i] != INT_MAX) {
       printf("Shortest path to vertex %s is %d with path:\n", graph->adjList[i]->city, dist[i]);
       printPath(graph, i, prev, V);
