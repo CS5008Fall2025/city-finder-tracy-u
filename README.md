@@ -18,6 +18,9 @@ Did you collaborate with any other students/TAs/Professors? If so, tell us who a
 Did you use any external resources (you do not have to cite in class material)? (Cite them below)  
 - http://algorithmics.lsi.upc.edu/docs/Dasgupta-Papadimitriou-Vazirani.pdf
 - https://www.geeksforgeeks.org/dsa/introduction-to-min-heap-data-structure/
+- https://www.geeksforgeeks.org/c/scanf-and-fscanf-in-c/
+- https://www.geeksforgeeks.org/c/taking-string-input-space-c-3-different-methods/
+- https://www.geeksforgeeks.org/c/error-handling-in-c/  
 
 
 
