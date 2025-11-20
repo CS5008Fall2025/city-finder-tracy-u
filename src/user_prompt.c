@@ -60,12 +60,19 @@ void setUp(char const* verticesFile, char const* distancesFile) {
 
 // TODO
 void findShortestPath(AdjListGraph* graph, char* city1, char* city2) {
-    int dist[graph->numVertices];
-    int prev[graph->numVertices];
-    int srcIndex = findCityIndex(graph, city1);
-    int destIndex = findCityIndex(graph, city2);
-    dijkstra(graph, srcIndex, dist, prev);
-    printPathFound(graph, destIndex, dist, prev, graph->numVertices);
+    if (findCityIndex(graph, city1) != -1 && findCityIndex(graph, city2) != -1) {
+        int dist[graph->numVertices];
+        int prev[graph->numVertices];
+        int srcIndex = findCityIndex(graph, city1);
+        int destIndex = findCityIndex(graph, city2);
+        dijkstra(graph, srcIndex, dist, prev);
+        // printSolution(graph, dist, prev, graph->numVertices); 
+        printPathFound(graph, destIndex, dist, prev, graph->numVertices);
+    } else {
+        printf("Invalid Command\n");
+        printHelp();
+    }
+    
 
 }
 
@@ -83,12 +90,12 @@ void promptUser(AdjListGraph* graph) {
         char* city2 = strtok(NULL, " ");
 
         if (city1 != NULL && city2 != NULL) {
-            if (findCityIndex(graph, city1) != -1 && findCityIndex(graph, city2) != -1) {
+            // if (findCityIndex(graph, city1) != -1 && findCityIndex(graph, city2) != -1) {
                 findShortestPath(graph, city1, city2);
-            } else {
-                printf("Invalid Command\n");
-                printHelp();
-            }
+            // } else {
+            //     printf("Invalid Command\n");
+            //     printHelp();
+            // }
         } else if (strcasecmp(menuChoice, "list") == 0) {
             printCityList(graph);
         } else if (strcasecmp(menuChoice, "help") == 0) {
@@ -147,6 +154,8 @@ int main(int argc, char const *argv[]) {
     AdjListGraph* graph = createGraph(50, false);
     loadFromFile(graph, verticesFile, distancesFile);
     // printGraph(graph);
+    // printCityVertices(graph);
+
 
     // int dist[graph->numVertices];
     // int prev[graph->numVertices];

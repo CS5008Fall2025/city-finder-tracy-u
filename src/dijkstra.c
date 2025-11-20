@@ -62,6 +62,7 @@ NeuHeapNode *__heapInsert(NeuHeap *minHeap, int data, int dist) {
   newNode->dist = dist;
   minHeap->array[minHeap->size] = newNode;
   minHeap->size++;
+  //DEBUG_PRINT(DEBUG_INFO, "Adding newNode data %d, dist %d, at minHeap->size: %d\n", data, dist, minHeap->size);
   return newNode;
 }
 
@@ -165,8 +166,8 @@ NeuHeapNode *__heapExtractMin(NeuHeap *minHeap) {
 void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
   // Initialize distance array and previous array
   for (int i = 0; i < graph->numVertices; i++) {
-    dist[i] = INT_MAX;
-    prev[i] = -1;
+    dist[i] = INT_MAX; // set all distances to max
+    prev[i] = -1; // set all prev to -1
   }
   dist[src] = 0;
 
@@ -176,19 +177,39 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
   // Insert all vertices into the min heap
   // we track the nodes, so we can have direct access to 
   // update the distance instead of having to search for the node
-  NeuHeapNode *nodes[graph->numVertices];
+  NeuHeapNode *nodes[graph->numVertices]; // create an array of nodes
   for (int i = 0; i < graph->numVertices; i++) {
-    nodes[i] = __heapInsert(minHeap, i, dist[i]);
-    
-    DEBUG_PRINT(DEBUG_INFO, "i: %d, data: %d, dist: %d\n", 
-      i, nodes[i]->data, nodes[i]->dist);
+    nodes[i] = __heapInsert(minHeap, i, dist[i]); // for each node, insert into heap
+    // printf("Heap: ");
+    // for (int j = 0; j < minHeap->size; j++) {
+    //       printf("%d ", minHeap->array[j]->data);
+    //   }
+    // printf("\n");
+  }
+
+  // turn that into heap 
+  // https://www.geeksforgeeks.org/dsa/introduction-to-min-heap-data-structure/
+  for (int i = graph->numVertices / 2 - 1; i >= 0; i--) {
+    __heapify(minHeap, i);
+    // printf("Step %d Heap: ", i);
+    // for (int j = 0; j < minHeap->size; j++) {
+    //       printf("%d ", minHeap->array[j]->data);
+    //   }
+    // printf("\n");
   }
 
   // Main loop for Dijkstra's algorithm
   while (!__heapIsEmpty(minHeap)) {
+
     // Extract the vertex with the minimum distance
     NeuHeapNode *minNode = __heapExtractMin(minHeap);
     int u = minNode->data;
+    // printf("min node: %d ", u);
+    // printf("PRINT HEAP\n");
+    // for (int i = 0; i < minHeap->size; i++) {
+    //   int dataVertex = minHeap->array[i]->data;
+    //   printf("i %d, city %s\n", minHeap->array[i]->data, graph->adjList[dataVertex]->city);
+    // }
 
     // If the extracted vertex is at infinity, all remaining vertices are
     // unreachable
@@ -198,11 +219,12 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
 
     // For each adjacent vertex v, update dist[v] if there's a shorter path
     // through u
-    AdjListNode *curr = graph->adjList[u];
-
+    // for the minNode, 
+    AdjListNode *curr = graph->adjList[u]; 
     while (curr != NULL) {
-      int v = findCityIndex(graph, curr->city);
-      int distance = curr->distance;
+      int v = findCityIndex(graph, curr->city); // city for current neighbor
+      // printf("v : %d, curr->city: %s\n", v, curr->city);
+      int distance = curr->distance; // curr neighbor distance
 
       // If there's a shorter path to v through u
       if (dist[u] != INT_MAX && dist[u] + distance < dist[v]) {
@@ -216,6 +238,113 @@ void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
   }
   __freeHeap(minHeap);
 }
+
+// void dijkstra(AdjListGraph *graph, int src, int *dist, int *prev) {
+//   // Initialize distance array and previous array
+//   for (int i = 0; i < graph->numVertices; i++) {
+//     dist[i] = INT_MAX;
+//     prev[i] = -1;
+//   }
+//   dist[src] = 0;
+  
+//   // Create a min heap to store vertices and their distances
+//   NeuHeap *minHeap = __createHeap(graph->numVertices);
+
+//   // Insert all vertices into the min heap
+//   // we track the nodes, so we can have direct access to 
+//   // update the distance instead of having to search for the node
+//   NeuHeapNode *nodes[graph->numVertices];
+
+
+//   for (int i = 0; i < graph->numVertices; i++) {
+//     nodes[i] = __heapInsert(minHeap, i, dist[i]);
+//   }
+//   // for(int i = 0; i < minHeap->size; i++) {
+//   //   printf("DEBUG preheapify minheap i: %d, data: %d city: %s, dist: %d\n", i,  minHeap->array[i]->data, graph->adjList[i]->city, minHeap->array[i]->dist);
+//   // } 
+
+//   // __heapify(minHeap,0);
+
+//   // for(int i = 0; i < minHeap->size; i++) {
+//   //   printf("DEBUG postheapify minheap i: %d, data: %d city: %s, dist: %d\n", i,  minHeap->array[i]->data, graph->adjList[i]->city, minHeap->array[i]->dist);
+//   // } 
+
+
+
+
+//   bool visited[graph->numVertices];
+//   for (int i = 0; i < graph->numVertices; i++) {
+//     visited[i] = false;
+//   }
+
+//   // Main loop for Dijkstra's algorithm
+//   while (!__heapIsEmpty(minHeap)) {
+
+//       // print array
+//     printf("printing minheap array!\n");
+//     // for(int i = 0; i < minHeap->size; i++) {
+//     //   printf("DEBUG i: %d, data: %d city: %s, dist: %d\n", i,  minHeap->array[i]->data, graph->adjList[i]->city, minHeap->array[i]->dist);
+//     // } 
+
+//   for(int i = 0; i < minHeap->size; i++) {
+//     int data = minHeap->array[i]->data;
+//     printf("DEBUG dist array i: %d, data: %d city: %s, dist i %d, dist data %d\n", i, data, graph->adjList[data]->city, dist[i], dist[data]);
+//   } 
+
+
+//     // Extract the vertex with the minimum distance
+//     NeuHeapNode *minNode = __heapExtractMin(minHeap);
+//     int u = minNode->data;
+//     printf("min node = %d, %s\n", u, graph->adjList[u]->city);
+
+//     if (visited[u]) {
+//       continue;
+//     } else {
+//       DEBUG_PRINT(DEBUG_INFO, "\n\nvisited %d, minNode->data: %d\n\n", u, minNode->data);
+//       visited[u] = true;
+//     }
+
+    //If the extracted vertex is at infinity, all remaining vertices are
+    //unreachable
+    // if (dist[u] == INT_MAX) {
+    //   break;
+    // }
+
+//     // For each adjacent vertex v, update dist[v] if there's a shorter path
+//     // through u
+//     AdjListNode *curr = graph->adjList[u];
+//     DEBUG_PRINT(DEBUG_INFO, "\n******WORKING ON %s ********\n", curr->city);
+//     if (curr != NULL) { // skip head
+//       curr = curr->next;
+//     }
+
+//     while (curr != NULL) {
+//       int v = findCityIndex(graph, curr->city);
+//       int distance = curr->distance;
+//       DEBUG_PRINT(DEBUG_INFO, "Processing city index v %d, city: %s, distance: %d\n", v, curr->city, curr->distance);
+
+
+//       // If there's a shorter path to v through u
+//       DEBUG_PRINT(DEBUG_INFO, "\nIs there a shorter path? %d\n, dist[u]: %d, distance: %d, dist[v]: %d, dist[u] + distance: %d\n\n", dist[u] != INT_MAX && dist[u] + distance < dist[v], dist[u], distance, dist[v], dist[u] + distance);
+//       if (dist[u] != INT_MAX && dist[u] + distance < dist[v]) {
+//         dist[v] = dist[u] + distance;
+//         prev[v] = u;
+//         // Update the distance in the heap
+//         __heapDecreaseKey(minHeap, nodes[v], dist[v]);
+//       }
+//       curr = curr->next;
+//     }
+//   }
+  
+  
+//   for(int i = 0; i < minHeap->size; i++) {
+//     int data = minHeap->array[i]->data;
+//     printf("DEBUG dist array i: %d, data: %d city: %s\n", i, data, graph->adjList[data]->city);
+//   } 
+
+
+//   __freeHeap(minHeap);
+// }
 
 /**
  * Prints the shortest path from source to a given vertex.
@@ -273,7 +402,7 @@ void printPathFound(AdjListGraph* graph, int destIndex, int *dist, int *prev, in
 void printSolution(AdjListGraph* graph, int *dist, int *prev, int V) {
   printf("Shortest Path from Source to Destination:\n");
   for (int i = 0; i < V; i++) {
-    printf("dist[i]: %d for i: %d\n", dist[i], i);
+    // printf("dist[i]: %d for i: %d\n", dist[i], i);
     if (dist[i] != INT_MAX) {
       printf("Shortest path to vertex %s is %d with path:\n", graph->adjList[i]->city, dist[i]);
       printPath(graph, i, prev, V);

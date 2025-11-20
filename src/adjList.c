@@ -153,12 +153,22 @@ void addEdge(AdjListGraph* graph, char* src, char* dest, int distance) {
     int srcIndex = addCityVertex(graph, src);
     int destIndex = addCityVertex(graph, dest);
 
+    //check if edge already exists
+    AdjListNode* curr = graph->adjList[srcIndex]->next;
+    while (curr != NULL) {
+        if (strcasecmp(curr->city, dest) == 0) {
+            return;
+        } 
+        curr = curr->next;
+    }
+
     AdjListNode* newNode = createNewNode(dest, distance);
     newNode->next = graph->adjList[srcIndex]->next;
     graph->adjList[srcIndex]->next = newNode;
     
+    // TODO
     if (!graph->directed) {
-        DEBUG_PRINT(DEBUG_INFO, "Adding reverse");
+        // DEBUG_PRINT(DEBUG_INFO, "Adding reverse");
         AdjListNode* reverseNode = createNewNode(src, distance);
         reverseNode->next = graph->adjList[destIndex]->next;
         graph->adjList[destIndex]->next = reverseNode;
@@ -298,7 +308,7 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
     edge_t* line;
 
     while ((line = reader_next_vertices(verticesReader)) != NULL) {
-        DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
+        // DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
         addCityVertex(graph, line->src);
     }
     reader_close(verticesReader);
@@ -313,7 +323,7 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
         char* src = line->src;
         char* dest = line->dest;
         int distance = line->distance;
-        DEBUG_PRINT(DEBUG_INFO, "Adding edge from %s to %s with distance %d\n", src, dest, distance);
+        // DEBUG_PRINT(DEBUG_INFO, "Adding edge from %s to %s with distance %d\n", src, dest, distance);
         addEdge(graph, src, dest, distance);
     }
     reader_close(distanceReader);
