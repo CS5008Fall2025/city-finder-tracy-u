@@ -35,14 +35,14 @@ Fill out these report questions.
    * How many possible paths are there if you have 10 stops?
      * 3628800 (10!)
 6. What type of growth is this problem? 
-   * Factorial growht
+   * Factorial growth
 7. Take some time to research TSP problems. It falls under a certain classification of problems? What is it? 
    The TSP problem is a computational optimization problem, and it is classified as NP-complete.
    This means that it is both NP and NP-hard. [^1] [^2] An NP-Hard problem "NP-hard if, for every problem L which can be solved in non-deterministic polynomial-time, there is a polynomial-time reduction from L to H." [^3] An NP problem is a problem "...for which any given yes-solution can be verified as a solution in polynomial time by a deterministic Turing machine (or solvable by a non-deterministic Turing machine in polynomial time)." [^3] NP-Complete is a "[c]lass of decision problems which contains the hardest problems in NP. Each NP-complete problem has to be in NP." [^3]
 
 
 8. Provide some examples of fields / problems that use TSP.
-   Some examples of fields that use TSP are 
+   Some examples of fields that use TSP are logistics, shipping, telecommunications, etc. 
 
 
 
@@ -72,7 +72,8 @@ For both these questions, are you are free to use what you did as the last secti
    with the values in this string, starting with all possible values was actually
    much more readable and efficient. 
 
-
+   **387. First Unique Character in a String**
+   
    ```c
    int firstUniqChar(char* s) {
     size_t length = strlen(s);
