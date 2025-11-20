@@ -9,13 +9,15 @@ Link to Assignment on Github:
 - https://github.com/CS5008Fall2025/city-finder-tracy-u
 - `assignment` branch
 
-How many hours did it take you to complete this assignment (estimate)? 
+How many hours did it take you to complete this assignment (estimate)? 35-45?
 
 Did you collaborate with any other students/TAs/Professors? If so, tell us who and in what capacity.  
-- one per row, add more if needed
-
+- I asked Dr. Jamieson for some additional resources on Dijkstra's algorithm, as I was struggling with the "more complex" cities test. 
+- Additionally, the work referenced from my Lab group. 
 
 Did you use any external resources (you do not have to cite in class material)? (Cite them below)  
-- one row per resource
+- http://algorithmics.lsi.upc.edu/docs/Dasgupta-Papadimitriou-Vazirani.pdf
+- https://www.geeksforgeeks.org/dsa/introduction-to-min-heap-data-structure/
+
 
 
