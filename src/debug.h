@@ -1,7 +1,8 @@
 /**
+ * Name: Tracy U
+ * CS 5008, Fall 2025
  * 
- * 
- * References: From graphs codealong 
+ * Reference: based on graphs code-along, updated. 
  * 
  * 
  */

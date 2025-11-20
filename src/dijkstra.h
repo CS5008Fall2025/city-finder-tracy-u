@@ -1,6 +1,8 @@
-/**
- * @file dijkstra.h
- * @brief Implementation of Dijkstra's algorithm for finding shortest paths in a graph
+/** 
+ * Name: Tracy U
+ * CS 5008, Fall 2025
+ * 
+ * Reference: based on graphs code-along Dijkstra's Shortest Path Algorithm 
  */
 
 #ifndef DIJKSTRA_H

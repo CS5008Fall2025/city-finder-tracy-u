@@ -164,7 +164,6 @@ edge_t* reader_next_vertices(GraphReader* reader) {
     }
 
     reader->currentLine->src = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char));
-    //reader->currentLine->dest = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char));
 
     if (reader->currentLine->src == NULL) {
         free(reader->currentLine);

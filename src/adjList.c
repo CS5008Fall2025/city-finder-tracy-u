@@ -1,8 +1,8 @@
 /**
- * Reference: based on code-along
-* Solution Code for Adjacency List Representation of Graph Code Along
-* @author Albert Lionelle
-* @date 2025-05-20
+ * Name: Tracy U
+ * CS 5008, Fall 2025
+ * 
+ * Reference: based on code-along for Adjacency List Representation of Graph
 **/
 
 #include <stdio.h>
@@ -87,15 +87,6 @@ void __resizeGraph(AdjListGraph* graph) {
     graph->capacity = newCapacity;
 }
 
-// TODO add documentation
-//
-// edge_t *creat_node(int v, int weight) {
-//     edge_t *new_node = (edge_t *)malloc(sizeof(edge_t));
-//     new_node->vertex = v;
-//     new_node->weight = weight;
-//     new_node->next = NULL;
-//     return new_node;
-// }
 AdjListNode* createNewNode(char* city, int distance) {
     AdjListNode* newNode = (AdjListNode*)malloc(sizeof(AdjListNode));
     if (newNode == NULL) {
@@ -143,12 +134,6 @@ int addCityVertex(AdjListGraph* graph, char* city) {
  * @param distance The distance of the edge.
  */
 void addEdge(AdjListGraph* graph, char* src, char* dest, int distance) {
-    // TODO: update, or handled by initial validation
-    // if (src < 0  ||  dest < 0 ) {
-    //     fprintf(stderr, "city index out of bounds.\n");
-    //     return;
-    // }
-
     // check if they exists; if not, add
     int srcIndex = addCityVertex(graph, src);
     int destIndex = addCityVertex(graph, dest);
@@ -174,97 +159,6 @@ void addEdge(AdjListGraph* graph, char* src, char* dest, int distance) {
         graph->adjList[destIndex]->next = reverseNode;
     }
 }
-
-// /**
-//  * Gets the degree (number of neighbors) of a city.
-//  * @param graph A pointer to the AdjListGraph.
-//  * @param city The city to get the degree of.
-//  * @return The degree of the city.  -1 if not found.
-//  */
-// int getDegree(AdjListGraph* graph, char* city) {
-//     // TODO: update, or handled by initial validation
-//     // if (city < 0 || city >= graph->numVertices) {
-//     //     fprintf(stderr, "city index out of bounds.\n");
-//     //     return -1;
-//     // }
-
-//     int index = findCityIndex(graph, city);
-//     if (index < 0) {
-//         fprintf(stderr, "City %s not found.\n", city);
-//         return -1;
-//     }
-//     int degree = 0;
-//     //AdjListNode* current = graph->adjList[city];
-//     // start with next b/c first node is self-referential
-//     AdjListNode* current = graph->adjList[index]->next;
-//     while (current != NULL) {
-//         degree++;
-//         current = current->next;
-//     }
-//     return degree;
-// }
-
-/**
- * Gets the neighbors of a city.
- * @param graph A pointer to the AdjListGraph.
- * @param city The city to get neighbors for.
- * @return A pointer to an array of neighbor city names (caller must free).
- */
-// char* getNeighbors(AdjListGraph* graph, char* city) {
-//     // TODO: update, or handled by initial validation
-
-//     // if (city < 0 || city >= graph->numVertices) {
-//     //     fprintf(stderr, "city index out of bounds.\n");
-//     //     return NULL;
-//     // }
-
-//     int index = findCityIndex(graph, city);
-//     if (index < 0) {
-//         fprintf(stderr, "City %s not found.\n", city);
-//         return NULL;
-//     }
-//     int degree = getDegree(graph, city);
-//     // TODO -- update this and signature to nodes??
-//     char* neighbors = (char*)malloc(degree * BUFFER_SIZE * sizeof(char));
-//     if (neighbors == NULL) {
-//         fprintf(stderr, "Memory allocation failed for neighbors array.\n");
-//         return NULL;
-//     }
-//     //AdjListNode* current = graph->adjList[city];
-//     AdjListNode* current = graph->adjList[index]->next;
-//     for (int i = 0; i < degree; i++) {
-//         if (current != NULL) {
-//             neighbors[i] = *current->city;
-//             current = current->next;
-//         }
-//     }
-//     return neighbors;
-// }
-
-// /**
-//  * Gets the distance of the edge from src to dest.
-//  * @param graph A pointer to the AdjListGraph.
-//  * @param src The source city.
-//  * @param dest The destination city.
-//  * @return The distance of the edge, or 0 if no edge exists.
-//  */
-// int getDistance(AdjListGraph* graph, char* src, char* dest) {
-//     // TODO: update, or handled by initial validation
-//     // if (src < 0 || src >= graph->numVertices || dest < 0 || dest >= graph->numVertices) {
-//     //     fprintf(stderr, "city index out of bounds.\n");
-//     //     return 0;
-//     // }
-    
-//     // find src
-//     AdjListNode* current = findNode(graph, src);
-//     while (current != NULL) {
-//         if (current->city == dest) {
-//             return current->distance;
-//         }
-//         current = current->next;
-//     }
-//     return 0; // No edge exists
-// }
 
 /**
  * Prints the adjacency list of the graph.
@@ -308,7 +202,6 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
     edge_t* line;
 
     while ((line = reader_next_vertices(verticesReader)) != NULL) {
-        // DEBUG_PRINT(DEBUG_INFO, "Adding city vertex %s\n", line->src);
         addCityVertex(graph, line->src);
     }
     reader_close(verticesReader);
@@ -323,7 +216,6 @@ void loadFromFile(AdjListGraph* graph, const char* verticesFilename, const char*
         char* src = line->src;
         char* dest = line->dest;
         int distance = line->distance;
-        // DEBUG_PRINT(DEBUG_INFO, "Adding edge from %s to %s with distance %d\n", src, dest, distance);
         addEdge(graph, src, dest, distance);
     }
     reader_close(distanceReader);
@@ -340,22 +232,6 @@ int findCityIndex(AdjListGraph* graph, char* city) {
     }
     return -1;
 }
-
-// /**
-//  * Finds a node based on the city name
-//  * @param graph A pointer to the AdjListGraph.
-//  * @param city The name of city
-//  * @return the node with this city name if found; otherwise NULL
-//  */
-// AdjListNode* findNode(AdjListGraph* graph, char* city) {
-//     DEBUG_PRINT(DEBUG_INFO, "Finding node for %s\n", city);
-//     int index = findCityIndex(graph, city);
-//     if (index == -1) {
-//         return NULL;
-//     }
-//     DEBUG_PRINT(DEBUG_INFO, "City found %s\n", city);
-//     return graph->adjList[index];
-// }
 
 // TODO add documentation
 void printCityVertices(AdjListGraph* graph) {
